@@ -5,3 +5,10 @@ authors = ["Stephen Cirner <scirner22@gmail.com>"]
 
 [dependencies]
 clap = "2.32.0"
+futures = "0.1.21"
+hyper = "0.12"
+hyper-tls = "0.3.0"
+prettytable-rs = "^0.7"
+serde = "1.0"
+serde_derive = "1.0"
+serde_json = "1.0"
