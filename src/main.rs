@@ -15,9 +15,19 @@ use std::io::prelude::*;
 
 use clap::{App, Arg};
 use hyper::rt::{self, Future};
-use prettytable::Table;
+use prettytable::{cell::Cell, row::Row, Table};
 
 mod iex;
+
+fn color_code<'a>(num: f32) -> &'a str {
+    if num > 0.0 {
+        "Fg"
+    } else if num < 0.0 {
+        "Fr"
+    } else {
+        ""
+    }
+}
 
 fn main() {
     let mut default_config = env::home_dir().unwrap();
@@ -74,12 +84,18 @@ fn main() {
             let mut table = Table::new();
             table.add_row(row!["SYMBOL", "PRICE", "DAILY", "YTD"]);
             for res in results {
-                table.add_row(row![
-                    res.get_symbol(),
-                    format!("{:.2}", res.delayed_price),
-                    format!("{:.2}%", res.daily_percentage()),
-                    format!("{:.2}%", res.ytd_percentage()),
-                ]);
+                let daily_change = format!("{:.2}%", res.daily_percentage());
+                let style = color_code(res.daily_percentage());
+                let daily_change = Cell::new(daily_change.as_str()).style_spec(style);
+                let ytd_change = format!("{:.2}%", res.ytd_percentage());
+                let style = color_code(res.ytd_percentage());
+                let ytd_change = Cell::new(ytd_change.as_str()).style_spec(style);
+                table.add_row(Row::new(vec![
+                    Cell::new(res.get_symbol()),
+                    Cell::new(format!("{:.2}", res.delayed_price).as_str()),
+                    daily_change,
+                    ytd_change,
+                ]));
             }
             table.printstd();
         })

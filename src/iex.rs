@@ -1,3 +1,5 @@
+use std::rc::Rc;
+
 use hyper::rt::{Future, Stream};
 use hyper::{self, client::HttpConnector};
 use hyper_tls::HttpsConnector;
@@ -30,14 +32,14 @@ impl IexResponse {
 
 #[derive(Clone)]
 pub struct IexClient {
-    // TODO wrap with Rc
-    client: hyper::Client<HttpsConnector<HttpConnector>, hyper::Body>,
+    client: Rc<hyper::Client<HttpsConnector<HttpConnector>, hyper::Body>>,
 }
 
 impl IexClient {
     pub fn new() -> Self {
         let https = HttpsConnector::new(4).unwrap();
         let client = hyper::Client::builder().build(https);
+        let client = Rc::new(client);
         IexClient { client }
     }
 
