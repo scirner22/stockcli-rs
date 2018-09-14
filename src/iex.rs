@@ -12,7 +12,7 @@ const BASE_URL: &str = "https://api.iextrading.com/1.0";
 pub struct IexResponse {
     symbol: String,
     pub delayed_price: f32,
-    open: f32,
+    close: f32,
     ytd_change: f32,
 }
 
@@ -26,7 +26,7 @@ impl IexResponse {
     }
 
     pub fn daily_percentage(&self) -> f32 {
-        ((self.delayed_price - self.open) / self.open) * 100.0
+        ((self.delayed_price - self.close) / self.close) * 100.0
     }
 }
 
