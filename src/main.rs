@@ -47,15 +47,13 @@ fn main() {
                     "Path to file containing comma separated list \
                      of ticker symbols (defaults to ~/.stockcli/config.csv)",
                 ),
-        )
-        .arg(
+        ).arg(
             Arg::with_name("symbols")
                 .short("s")
                 .long("symbols")
                 .takes_value(true)
                 .help("Comma separated list of ticker symbols (overides --config)"),
-        )
-        .get_matches();
+        ).get_matches();
 
     let symbols: Vec<String>;
     if let Some(s) = matches.value_of("symbols") {
@@ -98,8 +96,7 @@ fn main() {
                 ]));
             }
             table.printstd();
-        })
-        .map_err(|err| println!("{:?}", err));
+        }).map_err(|err| println!("{:?}", err));
 
     rt::run(f);
 }

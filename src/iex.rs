@@ -53,7 +53,6 @@ impl IexClient {
                 let s = ::std::str::from_utf8(&body).expect("httpbin sends utf-8 JSON");
                 let v: IexResponse = serde_json::from_str(s).unwrap();
                 Ok(v)
-            })
-            .map_err(|err| println!("{:?}", err))
+            }).map_err(|err| println!("{:?}", err))
     }
 }
